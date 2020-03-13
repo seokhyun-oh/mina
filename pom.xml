@@ -60,6 +60,17 @@
     </license>
   </licenses>
 
+  <modules>
+    <module>core</module>
+    <module>java5</module>
+    <module>filter-ssl</module>
+    <module>filter-codec-netty</module>
+    <module>filter-compression</module>
+    <module>integration-spring</module>
+    <module>integration-jmx</module>
+    <module>example</module>
+  </modules>
+
   <dependencies>
    <dependency>
       <groupId>junit</groupId>
@@ -69,76 +80,6 @@
     </dependency>
   </dependencies>
 
-  <repositories>
-  </repositories>
-
-  <profiles>
-    <profile>
-      <id>jdk1.5</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-        <jdk>1.5</jdk>
-      </activation>
-      <modules>
-        <module>core</module>
-        <module>java5</module>
-        <module>filter-ssl</module>
-        <module>filter-codec-netty</module>
-        <module>filter-compression</module>
-        <module>integration-spring</module>
-	      <module>integration-jmx</module>
-        <module>example</module>
-      </modules>
-    </profile>
-
-    <profile>
-      <id>jdk1.4</id>
-      <activation>
-        <jdk>1.4</jdk>
-      </activation>
-      <modules>
-        <module>core</module>
-        <module>filter-codec-netty</module>
-        <module>filter-compression</module>
-      </modules>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>validate</phase>
-                <configuration>
-                  <tasks>
-                    <echo>
-====================================================================
-                       W A R N I N G
-                       -------------
-
-Build with 1.4 jvm will not include modules:
- 
- o mina-java5
- o mina-filter-ssl
- o mina-integration-spring
- o mina-example
- o mina-jmx
-
-Use JDK 1.5 to make sure these modules build.
-====================================================================
-                    </echo>
-                  </tasks>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-  
   <build>
     <plugins>
       <plugin>
@@ -146,11 +87,10 @@ Use JDK 1.5 to make sure these modules build.
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <encoding>UTF-8</encoding>
-          <source>1.4</source>
-          <target>1.4</target>
+          <source>1.5</source>
+          <target>1.5</target>
           <debug>true</debug>
           <optimize>true</optimize>
-          <showDeprecations>true</showDeprecations>
         </configuration>
       </plugin>
       <plugin>
@@ -158,11 +98,9 @@ Use JDK 1.5 to make sure these modules build.
         <configuration>
           <excludes>
             <exclude>**/Abstract*</exclude>
-
             <!-- Timing issues with these tests due to VM bug for releasing file descriptors -->
             <exclude>**/DatagramBindTest.java</exclude>
             <exclude>**/VmPipeTrafficControlTest.java</exclude>
-
             <exclude>**/*RegressionTest*</exclude>
           </excludes>
         </configuration>
@@ -200,42 +138,4 @@ Use JDK 1.5 to make sure these modules build.
       </plugin>
     </plugins>
   </build>
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <inherited>false</inherited>
-        <configuration>
-          <aggregate>true</aggregate>
-          <breakiterator>true</breakiterator>
-          <charset>UTF-8</charset>
-          <docencoding>UTF-8</docencoding>
-          <windowtitle>Apache MINA ${project.version} API Documentation</windowtitle>
-          <doctitle>Apache MINA ${project.version} API Documentation</doctitle>
-          <encoding>UTF-8</encoding>
-          <excludePackageNames>*.support:*.example.*</excludePackageNames>
-          <links>
-            <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
-            <link>http://www.slf4j.org/api/</link>
-            <link>http://static.springframework.org/spring/docs/2.0.x/api/</link>
-            <link>http://dcl.mathcs.emory.edu/util/backport-util-concurrent/doc/api/</link>
-          </links>
-          <locale>en_US</locale>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-        <inherited>false</inherited>
-        <configuration>
-          <aggregate>true</aggregate>
-          <inputEncoding>UTF-8</inputEncoding>
-          <outputEncoding>UTF-8</outputEncoding>
-          <windowTitle>Apache MINA ${project.version} Cross Reference</windowTitle>
-          <docTitle>Apache MINA ${project.version} Cross Reference</docTitle>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
 </project>
